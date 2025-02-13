@@ -60,57 +60,79 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    /* ======= FORMULÁRIO DE INSCRIÇÃO ======= */
-    const form = document.getElementById("subscribeForm");
-    const emailInput = document.getElementById("emailInput");
-    const subscribeMessage = document.getElementById("subscribeMessage");
+    /* ======= CHATBOT LOCAL ======= */
+    const chatbotToggle = document.getElementById("chatbot-toggle");
+    const chatbotContainer = document.querySelector(".chatbot-container");
+    const chatBox = document.getElementById("chatBox");
+    const userInput = document.getElementById("userInput");
+    const sendMessage = document.getElementById("sendMessage");
 
-    if (form) {
-        form.addEventListener("submit", function (e) {
-            e.preventDefault();
-            const email = emailInput.value.trim();
+    // Respostas pré-definidas
+    const respostas = {
+        "olá": "Olá! Como posso ajudar-te hoje? 😊",
+        "quem és tu?": "Sou o EcoBot, um assistente especializado em ambiente e IA! 🌱",
+        "o que é a comunidade de ambiente e ia?": "A nossa comunidade explora tecnologia para um futuro mais sustentável. 🌍",
+        "como posso participar?": "Podes participar de várias formas! Escolhe uma opção:",
+        "adeus": "Até breve! Sempre aqui para ajudar. 👋",
+        "default": "Desculpa, não entendi. Podes reformular a tua pergunta?"
+    };
 
-            if (!validarEmail(email)) {
-                mostrarMensagem("⚠️ Por favor, insere um email válido.", "red");
-                return;
-            }
-
-            mostrarMensagem("⏳ A processar...", "blue");
-
-            fetch("https://script.google.com/macros/s/AKfycbzf6KUxUK4-JxqW9sqsYdEsbYeSnOs8OY-CU41BcLLugL5yFXtgbXu0kdkeEiyjOUzs/exec", {
-                method: "POST",
-                mode: "cors", // Para evitar bloqueios de CORS
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email: email })
-            })
-            .then(response => response.text())
-            .then(data => {
-                console.log("Resposta do servidor:", data);
-                if (data.includes("Sucesso")) {
-                    mostrarMensagem("✅ Obrigado por te inscreveres!", "green");
-                    emailInput.value = "";
-                } else if (data.includes("já está registado")) {
-                    mostrarMensagem("⚠️ Este email já está registado.", "orange");
-                } else {
-                    mostrarMensagem("❌ Erro ao registar. Tenta novamente.", "red");
-                }
-            })
-            .catch(error => {
-                console.error("Erro:", error);
-                mostrarMensagem("❌ Erro ao comunicar com o servidor.", "red");
-            });
+    if (chatbotToggle) {
+        chatbotToggle.addEventListener("click", function () {
+            chatbotContainer.style.display = chatbotContainer.style.display === "block" ? "none" : "block";
         });
     }
 
-    function validarEmail(email) {
-        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    function addMessage(text, type) {
+        const message = document.createElement("p");
+        message.classList.add(type === "bot" ? "bot-message" : "user-message");
+        message.innerText = text;
+        chatBox.appendChild(message);
+        chatBox.scrollTop = chatBox.scrollHeight;
     }
 
-    function mostrarMensagem(texto, cor) {
-        subscribeMessage.textContent = texto;
-        subscribeMessage.style.color = cor;
+    function getBotResponse(userMessage) {
+        const lowerCaseMessage = userMessage.toLowerCase();
+        return respostas[lowerCaseMessage] || respostas["default"];
     }
+
+    function showTypingIndicator() {
+        const typingMessage = document.createElement("p");
+        typingMessage.classList.add("bot-message");
+        typingMessage.innerText = "EcoBot está a escrever...";
+        typingMessage.id = "typingIndicator";
+        chatBox.appendChild(typingMessage);
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    function hideTypingIndicator() {
+        const typingIndicator = document.getElementById("typingIndicator");
+        if (typingIndicator) {
+            typingIndicator.remove();
+        }
+    }
+
+    sendMessage.addEventListener("click", function () {
+        const userText = userInput.value.trim();
+        if (userText === "") return;
+
+        addMessage(userText, "user");
+        userInput.value = "";
+
+        showTypingIndicator();
+        setTimeout(() => {
+            hideTypingIndicator();
+            addMessage(getBotResponse(userText), "bot");
+        }, 1500);
+    });
+
+    userInput.addEventListener("keypress", function (e) {
+        if (e.key === "Enter") {
+            sendMessage.click();
+        }
+    });
 });
+
 
 
 
