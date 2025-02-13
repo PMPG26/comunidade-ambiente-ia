@@ -58,6 +58,8 @@ nav ul li a {
         top: 60px;
         left: 0;
         width: 100%;
+        padding: 10px 0;
+        text-align: center;
     }
 
     .nav-links.active {
@@ -67,6 +69,10 @@ nav ul li a {
     .menu-toggle {
         display: block;
     }
+
+    nav ul li {
+        margin: 10px 0;
+    }
 }
 
 /* Hero Section */
@@ -75,6 +81,21 @@ nav ul li a {
     padding: 50px;
     background: #66bb6a;
     color: white;
+}
+
+/* Correção da imagem no mobile */
+.hero img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+/* Ajuste do tamanho da imagem no mobile */
+@media screen and (max-width: 768px) {
+    .hero img {
+        width: 80%;
+    }
 }
 
 /* Botão "Voltar ao Topo" */
@@ -96,6 +117,7 @@ nav ul li a {
     background: #2e7d32;
 }
 
+/* Rodapé */
 footer {
     background: #1b5e20;
     color: white;
@@ -103,4 +125,5 @@ footer {
     padding: 10px;
     margin-top: 20px;
 }
+
 
