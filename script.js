@@ -198,5 +198,36 @@ document.addEventListener("DOMContentLoaded", function () {
             sendMessage.click();
         }
     });
+
+    /* ======= FORMULÁRIO DE INSCRIÇÃO ======= */
+    const form = document.getElementById("subscribeForm");
+    const emailInput = document.getElementById("emailInput");
+    const subscribeMessage = document.getElementById("subscribeMessage");
+
+    form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        const email = emailInput.value.trim();
+
+        if (email === "") {
+            subscribeMessage.textContent = "Por favor, insere um email válido.";
+            return;
+        }
+
+        fetch("A_TUA_URL_DO_SCRIPT_GOOGLE", {
+            method: "POST",
+            body: JSON.stringify({ email: email }),
+            headers: { "Content-Type": "application/json" }
+        })
+        .then(response => response.text())
+        .then(data => {
+            subscribeMessage.textContent = "Obrigado por te inscreveres!";
+            emailInput.value = "";
+        })
+        .catch(error => {
+            console.error("Erro:", error);
+            subscribeMessage.textContent = "Erro ao registar. Tenta novamente.";
+        });
+    });
 });
+
 
