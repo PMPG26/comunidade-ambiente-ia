@@ -12,7 +12,7 @@ body {
     line-height: 1.6;
 }
 
-/* Cabeçalho */
+/* Cabeçalho fixo */
 header {
     display: flex;
     justify-content: space-between;
@@ -20,7 +20,16 @@ header {
     background: #1b5e20;
     color: white;
     padding: 15px 20px;
-    position: relative;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+/* Para evitar sobreposição no conteúdo */
+main {
+    padding-top: 80px;
 }
 
 .logo {
@@ -51,9 +60,10 @@ nav ul li a {
     cursor: pointer;
 }
 
+/* Estilização para animação do menu */
 @media screen and (max-width: 768px) {
     .nav-links {
-        display: none;
+        display: flex;
         flex-direction: column;
         background: #1b5e20;
         position: absolute;
@@ -61,11 +71,14 @@ nav ul li a {
         left: 0;
         width: 100%;
         text-align: center;
-        padding: 15px 0;
+        padding: 10px 0;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease-in-out;
     }
 
     .nav-links.active {
-        display: flex;
+        max-height: 500px;
     }
 
     .menu-toggle {
@@ -113,6 +126,16 @@ nav ul li a {
     display: none;
     border-radius: 50%;
     font-size: 1.2rem;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Ajuste para mobile */
+@media screen and (max-width: 768px) {
+    #backToTop {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
 }
 
 #backToTop:hover {
@@ -127,6 +150,7 @@ footer {
     padding: 10px;
     margin-top: 20px;
 }
+
 
 
 
