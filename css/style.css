@@ -3,7 +3,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: Arial, sans-serif;
+    font-family: 'Poppins', sans-serif;
 }
 
 body {
@@ -12,20 +12,27 @@ body {
     line-height: 1.6;
 }
 
+/* Header e navegação */
 header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     background: #1b5e20;
-    color: #fff;
-    padding: 20px;
-    text-align: center;
+    color: white;
+    padding: 15px 20px;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
 }
 
 nav ul {
     list-style: none;
-    padding: 0;
+    display: flex;
 }
 
 nav ul li {
-    display: inline;
     margin: 0 15px;
 }
 
@@ -35,34 +42,58 @@ nav ul li a {
     font-weight: bold;
 }
 
+/* Menu Mobile */
+.menu-toggle {
+    display: none;
+    font-size: 2rem;
+    cursor: pointer;
+}
+
+@media screen and (max-width: 768px) {
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        background: #1b5e20;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        width: 100%;
+    }
+
+    .nav-links.active {
+        display: flex;
+    }
+
+    .menu-toggle {
+        display: block;
+    }
+}
+
+/* Hero Section */
 .hero {
     text-align: center;
     padding: 50px;
     background: #66bb6a;
     color: white;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
 }
 
-.hero img {
-    max-width: 100%; /* Garante que a imagem não ultrapassa o ecrã */
-    height: auto; /* Mantém a proporção */
-    display: block; /* Remove espaços extras abaixo da imagem */
-    margin: 0 auto; /* Centraliza */
+/* Botão "Voltar ao Topo" */
+#backToTop {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #1b5e20;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    display: none;
+    border-radius: 50%;
+    font-size: 1.2rem;
 }
 
-@media (max-width: 768px) {
-    .hero {
-        text-align: center;
-    }
-    
-    .hero img {
-        width: 90%; /* Ajusta o tamanho no mobile */
-        max-width: 400px; /* Limita o tamanho */
-        order: -1; /* Coloca a imagem antes do texto */
-    }
+#backToTop:hover {
+    background: #2e7d32;
 }
 
 footer {
@@ -72,3 +103,4 @@ footer {
     padding: 10px;
     margin-top: 20px;
 }
+
