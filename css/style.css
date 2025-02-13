@@ -12,7 +12,7 @@ body {
     line-height: 1.6;
 }
 
-/* Header e navegação */
+/* Cabeçalho */
 header {
     display: flex;
     justify-content: space-between;
@@ -20,6 +20,7 @@ header {
     background: #1b5e20;
     color: white;
     padding: 15px 20px;
+    position: relative;
 }
 
 .logo {
@@ -27,6 +28,7 @@ header {
     font-weight: bold;
 }
 
+/* Menu desktop */
 nav ul {
     list-style: none;
     display: flex;
@@ -58,8 +60,8 @@ nav ul li a {
         top: 60px;
         left: 0;
         width: 100%;
-        padding: 10px 0;
         text-align: center;
+        padding: 15px 0;
     }
 
     .nav-links.active {
@@ -125,5 +127,6 @@ footer {
     padding: 10px;
     margin-top: 20px;
 }
+
 
 
