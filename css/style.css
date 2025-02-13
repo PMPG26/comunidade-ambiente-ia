@@ -333,6 +333,13 @@ footer {
     visibility: visible !important;
 }
 
+main {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+
 
 
 
