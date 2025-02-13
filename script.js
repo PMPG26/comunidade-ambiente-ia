@@ -14,8 +14,16 @@ document.addEventListener("DOMContentLoaded", function () {
         console.error("Erro: Elementos do menu não encontrados!");
     }
 
-    /* ======= MODO ESCURO ======= */
+    /* ======= MODO ESCURO GLOBAL ======= */
     const darkModeToggle = document.getElementById("darkModeToggle");
+
+    function aplicarModoEscuro() {
+        if (localStorage.getItem("darkMode") === "enabled") {
+            document.body.classList.add("dark-mode");
+        }
+    }
+
+    aplicarModoEscuro(); // Aplica o modo escuro ao carregar a página
 
     if (darkModeToggle) {
         darkModeToggle.addEventListener("click", function () {
@@ -27,11 +35,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 localStorage.setItem("darkMode", "disabled");
             }
         });
-
-        // Ativar modo escuro caso esteja salvo no navegador
-        if (localStorage.getItem("darkMode") === "enabled") {
-            document.body.classList.add("dark-mode");
-        }
     }
 
     /* ======= BOTÃO "VOLTAR AO TOPO" ======= */
