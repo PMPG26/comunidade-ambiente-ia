@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Comunidade de Ambiente e IA</title>
     
-    <!-- Meta Tags para SEO e redes sociais -->
+    <!-- Meta Tags para SEO e Redes Sociais -->
     <meta name="description" content="Comunidade de Ambiente e IA - Exploramos soluções tecnológicas para um futuro sustentável.">
     <meta property="og:title" content="Comunidade de Ambiente e IA">
     <meta property="og:description" content="Unimos inovação e sustentabilidade para um futuro mais inteligente.">
@@ -20,8 +20,10 @@
     <script defer src="script.js"></script>
 </head>
 <body>
+    <!-- Cabeçalho -->
     <header>
         <div class="logo">🌍 IA Sustentável</div>
+        <button id="darkModeToggle">🌙</button>
         <nav>
             <ul class="nav-links">
                 <li><a href="index.html">Início</a></li>
@@ -36,11 +38,17 @@
         </nav>
     </header>
 
+    <!-- Notificação -->
+    <div id="notification" class="notification">
+        🌍 Nova publicação no Blog! <a href="blog.html">Ler agora</a>
+        <button id="closeNotification">✖</button>
+    </div>
+
     <main>
-        <section class="hero">
+        <section class="hero fade-in">
             <h2>Bem-vindos à Comunidade de Ambiente e Inteligência Artificial</h2>
             <p>Unimos inovação e sustentabilidade para um futuro mais inteligente.</p>
-            <img src="images/hero-image.jpg" alt="Natureza e Tecnologia">
+            <img src="images/hero-image.jpg" alt="Natureza e Tecnologia" loading="lazy">
         </section>
     </main>
 
@@ -52,5 +60,6 @@
     </footer>
 </body>
 </html>
+
 
 
