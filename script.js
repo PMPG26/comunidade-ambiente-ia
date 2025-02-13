@@ -213,7 +213,7 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        fetch("1HMvlWvrjGkUXfvusnUHsiq15nrXETHoZJutK0lRNtI0", {
+        fetch("https://script.google.com/macros/s/AKfycbzf6KUxUK4-JxqW9sqsYdEsbYeSnOs8OY-CU41BcLLugL5yFXtgbXu0kdkeEiyjOUzs/exec", {
             method: "POST",
             body: JSON.stringify({ email: email }),
             headers: { "Content-Type": "application/json" }
