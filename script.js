@@ -213,7 +213,7 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        fetch("A_TUA_URL_DO_SCRIPT_GOOGLE", {
+        fetch("1HMvlWvrjGkUXfvusnUHsiq15nrXETHoZJutK0lRNtI0", {
             method: "POST",
             body: JSON.stringify({ email: email }),
             headers: { "Content-Type": "application/json" }
