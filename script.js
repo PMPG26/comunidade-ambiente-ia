@@ -83,15 +83,22 @@ document.addEventListener("DOMContentLoaded", function () {
         observer.observe(element);
     });
 
-    /* ======= CHATBOT COM API DO CHATGPT (OPENAI) ======= */
+    /* ======= CHATBOT LOCAL ======= */
     const chatbotToggle = document.getElementById("chatbot-toggle");
     const chatbotContainer = document.querySelector(".chatbot-container");
     const chatBox = document.getElementById("chatBox");
     const userInput = document.getElementById("userInput");
     const sendMessage = document.getElementById("sendMessage");
 
-    const API_KEY = "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"; // ✅ API da OpenAI
-    const API_URL = "https://api.openai.com/v1/chat/completions";
+    // Respostas pré-definidas
+    const respostas = {
+        "olá": "Olá! Como posso ajudar-te hoje? 😊",
+        "quem és tu?": "Sou o EcoBot, um assistente especializado em ambiente e IA! 🌱",
+        "o que é a comunidade de ambiente e IA?": "A nossa comunidade explora tecnologia para um futuro mais sustentável. 🌍",
+        "como posso participar?": "Podes juntar-te participando nos eventos e interagindo no nosso blog! 🚀",
+        "adeus": "Até breve! Sempre aqui para ajudar. 👋",
+        "default": "Desculpa, não entendi. Podes reformular a tua pergunta?"
+    };
 
     if (chatbotToggle) {
         chatbotToggle.addEventListener("click", function () {
@@ -107,32 +114,9 @@ document.addEventListener("DOMContentLoaded", function () {
         chatBox.scrollTop = chatBox.scrollHeight;
     }
 
-    async function getBotResponse(userMessage) {
-        addMessage("EcoBot está a pensar... ⏳", "bot");
-
-        try {
-            const response = await fetch(API_URL, {
-                method: "POST",
-                headers: {
-                    "Authorization": `Bearer ${API_KEY}`,
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    model: "gpt-3.5-turbo",
-                    messages: [
-                        { role: "system", content: "Tu és o EcoBot, um assistente especializado em ambiente e inteligência artificial. Responde de forma curta, objetiva e amigável." },
-                        { role: "user", content: userMessage }
-                    ]
-                })
-            });
-
-            const data = await response.json();
-            chatBox.lastChild.remove(); // Remove "EcoBot está a pensar..."
-            addMessage(data.choices[0].message.content || "Desculpa, não entendi. Podes reformular?", "bot");
-        } catch (error) {
-            chatBox.lastChild.remove();
-            addMessage("Erro ao conectar com o servidor. Tenta novamente mais tarde.", "bot");
-        }
+    function getBotResponse(userMessage) {
+        const lowerCaseMessage = userMessage.toLowerCase();
+        return respostas[lowerCaseMessage] || respostas["default"];
     }
 
     sendMessage.addEventListener("click", function () {
@@ -142,7 +126,9 @@ document.addEventListener("DOMContentLoaded", function () {
         addMessage(userText, "user");
         userInput.value = "";
 
-        getBotResponse(userText);
+        setTimeout(() => {
+            addMessage(getBotResponse(userText), "bot");
+        }, 500);
     });
 
     userInput.addEventListener("keypress", function (e) {
@@ -151,3 +137,4 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
+
