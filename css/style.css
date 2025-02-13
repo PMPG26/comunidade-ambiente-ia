@@ -7,9 +7,26 @@
 }
 
 body {
-    background-color: #e8f5e9;
-    color: #2e7d32;
+    background-color: var(--background-color);
+    color: var(--text-color);
     line-height: 1.6;
+}
+
+/* Definições de cor para modo claro e escuro */
+:root {
+    --background-color: #e8f5e9;
+    --text-color: #2e7d32;
+    --header-color: #1b5e20;
+    --button-color: #1b5e20;
+    --notification-bg: #1b5e20;
+}
+
+.dark-mode {
+    --background-color: #121212;
+    --text-color: #ffffff;
+    --header-color: #1e1e1e;
+    --button-color: #333333;
+    --notification-bg: #333333;
 }
 
 /* Cabeçalho fixo */
@@ -17,7 +34,7 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: #1b5e20;
+    background: var(--header-color);
     color: white;
     padding: 15px 20px;
     position: fixed;
@@ -35,6 +52,15 @@ main {
 .logo {
     font-size: 1.5rem;
     font-weight: bold;
+}
+
+/* Botão do modo escuro */
+#darkModeToggle {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
 }
 
 /* Menu desktop */
@@ -65,7 +91,7 @@ nav ul li a {
     .nav-links {
         display: flex;
         flex-direction: column;
-        background: #1b5e20;
+        background: var(--header-color);
         position: absolute;
         top: 60px;
         left: 0;
@@ -118,7 +144,7 @@ nav ul li a {
     position: fixed;
     bottom: 20px;
     right: 20px;
-    background: #1b5e20;
+    background: var(--button-color);
     color: white;
     border: none;
     padding: 10px 15px;
@@ -142,14 +168,56 @@ nav ul li a {
     background: #2e7d32;
 }
 
+/* Notificação flutuante */
+.notification {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: var(--notification-bg);
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+}
+
+.notification a {
+    color: #c8e6c9;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.notification button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+/* Fade-in ao rolar */
+.fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
 /* Rodapé */
 footer {
-    background: #1b5e20;
+    background: var(--header-color);
     color: white;
     text-align: center;
     padding: 10px;
     margin-top: 20px;
 }
+
 
 
 
