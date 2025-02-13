@@ -42,18 +42,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (backToTopButton) {
         window.addEventListener("scroll", function () {
-            if (window.scrollY > 200) {
-                backToTopButton.style.display = "block";
-            } else {
-                backToTopButton.style.display = "none";
-            }
+            backToTopButton.style.display = window.scrollY > 200 ? "block" : "none";
         });
 
         backToTopButton.addEventListener("click", function () {
-            window.scrollTo({
-                top: 0,
-                behavior: "smooth"
-            });
+            window.scrollTo({ top: 0, behavior: "smooth" });
         });
     }
 
@@ -77,17 +70,16 @@ document.addEventListener("DOMContentLoaded", function () {
             e.preventDefault();
             const email = emailInput.value.trim();
 
-            if (email === "" || !email.includes("@")) {
-                subscribeMessage.textContent = "⚠️ Por favor, insere um email válido.";
-                subscribeMessage.style.color = "red";
+            if (!validarEmail(email)) {
+                mostrarMensagem("⚠️ Por favor, insere um email válido.", "red");
                 return;
             }
 
-            subscribeMessage.textContent = "⏳ A processar...";
-            subscribeMessage.style.color = "blue";
+            mostrarMensagem("⏳ A processar...", "blue");
 
             fetch("https://script.google.com/macros/s/AKfycbzf6KUxUK4-JxqW9sqsYdEsbYeSnOs8OY-CU41BcLLugL5yFXtgbXu0kdkeEiyjOUzs/exec", {
                 method: "POST",
+                mode: "cors", // Para evitar bloqueios de CORS
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email: email })
             })
@@ -95,22 +87,31 @@ document.addEventListener("DOMContentLoaded", function () {
             .then(data => {
                 console.log("Resposta do servidor:", data);
                 if (data.includes("Sucesso")) {
-                    subscribeMessage.textContent = "✅ Obrigado por te inscreveres!";
-                    subscribeMessage.style.color = "green";
+                    mostrarMensagem("✅ Obrigado por te inscreveres!", "green");
                     emailInput.value = "";
+                } else if (data.includes("já está registado")) {
+                    mostrarMensagem("⚠️ Este email já está registado.", "orange");
                 } else {
-                    subscribeMessage.textContent = "⚠️ Este email já está registado.";
-                    subscribeMessage.style.color = "orange";
+                    mostrarMensagem("❌ Erro ao registar. Tenta novamente.", "red");
                 }
             })
             .catch(error => {
                 console.error("Erro:", error);
-                subscribeMessage.textContent = "❌ Erro ao registar. Tenta novamente.";
-                subscribeMessage.style.color = "red";
+                mostrarMensagem("❌ Erro ao comunicar com o servidor.", "red");
             });
         });
     }
+
+    function validarEmail(email) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    function mostrarMensagem(texto, cor) {
+        subscribeMessage.textContent = texto;
+        subscribeMessage.style.color = cor;
+    }
 });
+
 
 
 
