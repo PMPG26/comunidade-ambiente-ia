@@ -47,73 +47,9 @@ header {
 /* Para evitar sobreposição no conteúdo */
 main {
     padding-top: 80px;
-}
-
-.logo {
-    font-size: 1.5rem;
-    font-weight: bold;
-}
-
-/* Botão do modo escuro */
-#darkModeToggle {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 1.5rem;
-    cursor: pointer;
-}
-
-/* Menu desktop */
-nav ul {
-    list-style: none;
-    display: flex;
-}
-
-nav ul li {
-    margin: 0 15px;
-}
-
-nav ul li a {
-    color: #c8e6c9;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-/* Menu Mobile */
-.menu-toggle {
-    display: none;
-    font-size: 2rem;
-    cursor: pointer;
-}
-
-/* Estilização para animação do menu */
-@media screen and (max-width: 768px) {
-    .nav-links {
-        display: flex;
-        flex-direction: column;
-        background: var(--header-color);
-        position: absolute;
-        top: 60px;
-        left: 0;
-        width: 100%;
-        text-align: center;
-        padding: 10px 0;
-        max-height: 0;
-        overflow: hidden;
-        transition: max-height 0.3s ease-in-out;
-    }
-
-    .nav-links.active {
-        max-height: 500px;
-    }
-
-    .menu-toggle {
-        display: block;
-    }
-
-    nav ul li {
-        margin: 10px 0;
-    }
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
 }
 
 /* Hero Section */
@@ -124,11 +60,13 @@ nav ul li a {
     color: white;
 }
 
-/* Correção da imagem no mobile */
+/* Correção da imagem do hero */
 .hero img {
+    display: block !important;
     max-width: 100%;
     height: auto;
-    display: block;
+    opacity: 1 !important;
+    visibility: visible !important;
     margin: 0 auto;
 }
 
@@ -153,15 +91,6 @@ nav ul li a {
     border-radius: 50%;
     font-size: 1.2rem;
     transition: all 0.3s ease-in-out;
-}
-
-/* Ajuste para mobile */
-@media screen and (max-width: 768px) {
-    #backToTop {
-        width: 40px;
-        height: 40px;
-        font-size: 1rem;
-    }
 }
 
 #backToTop:hover {
@@ -325,6 +254,7 @@ footer {
     color: white;
 }
 
+/* Garantia de visibilidade da imagem e do conteúdo */
 .hero img {
     display: block !important;
     max-width: 100%;
@@ -338,6 +268,7 @@ main {
     opacity: 1 !important;
     visibility: visible !important;
 }
+
 
 
 
