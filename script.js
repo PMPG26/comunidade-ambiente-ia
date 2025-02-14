@@ -42,11 +42,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (backToTopButton) {
         window.addEventListener("scroll", function () {
-            backToTopButton.style.display = window.scrollY > 200 ? "block" : "none";
+            if (window.scrollY > 200) {
+                backToTopButton.style.display = "block";
+            } else {
+                backToTopButton.style.display = "none";
+            }
         });
 
         backToTopButton.addEventListener("click", function () {
-            window.scrollTo({ top: 0, behavior: "smooth" });
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
         });
     }
 
@@ -59,6 +66,22 @@ document.addEventListener("DOMContentLoaded", function () {
             notification.style.display = "none";
         });
     }
+
+    /* ======= ANIMAÇÃO "FADE-IN" AO ROLAR ======= */
+    const fadeElements = document.querySelectorAll(".fade-in");
+
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add("visible");
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.3 });
+
+    fadeElements.forEach(element => {
+        observer.observe(element);
+    });
 
     /* ======= CHATBOT LOCAL ======= */
     const chatbotToggle = document.getElementById("chatbot-toggle");
@@ -96,6 +119,24 @@ document.addEventListener("DOMContentLoaded", function () {
         return respostas[lowerCaseMessage] || respostas["default"];
     }
 
+    function addQuickReplies(options) {
+        const quickReplyContainer = document.createElement("div");
+        quickReplyContainer.classList.add("quick-replies");
+
+        options.forEach(option => {
+            const button = document.createElement("button");
+            button.innerText = option;
+            button.addEventListener("click", function () {
+                userInput.value = option;
+                sendMessage.click();
+            });
+            quickReplyContainer.appendChild(button);
+        });
+
+        chatBox.appendChild(quickReplyContainer);
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
     function showTypingIndicator() {
         const typingMessage = document.createElement("p");
         typingMessage.classList.add("bot-message");
@@ -112,6 +153,26 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
+    function saveChatHistory() {
+        const messages = chatBox.innerHTML;
+        localStorage.setItem("chatHistory", messages);
+    }
+
+    function loadChatHistory() {
+        const savedMessages = localStorage.getItem("chatHistory");
+        if (savedMessages) {
+            chatBox.innerHTML = savedMessages;
+        }
+    }
+
+    const notificationSound = new Audio("sounds/notificacao.mp3");
+
+    function playNotificationSound() {
+        notificationSound.play();
+    }
+
+    loadChatHistory(); // Carregar histórico ao iniciar a página
+
     sendMessage.addEventListener("click", function () {
         const userText = userInput.value.trim();
         if (userText === "") return;
@@ -123,6 +184,12 @@ document.addEventListener("DOMContentLoaded", function () {
         setTimeout(() => {
             hideTypingIndicator();
             addMessage(getBotResponse(userText), "bot");
+            playNotificationSound();
+            saveChatHistory();
+
+            if (userText.toLowerCase() === "como posso participar?") {
+                addQuickReplies(["Eventos", "Blog", "Contato"]);
+            }
         }, 1500);
     });
 
