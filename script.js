@@ -8,22 +8,43 @@ document.addEventListener("DOMContentLoaded", function () {
     if (menuToggle && navLinks) {
         menuToggle.addEventListener("click", function () {
             navLinks.classList.toggle("active");
-            console.log("Menu hamburguer clicado!");
         });
-    } else {
-        console.error("Erro: Elementos do menu não encontrados!");
+
+        // Fechar menu ao clicar num link
+        document.querySelectorAll(".nav-links a").forEach(link => {
+            link.addEventListener("click", function () {
+                navLinks.classList.remove("active");
+            });
+        });
+
+        // Fechar menu ao clicar fora dele
+        document.addEventListener("click", function (event) {
+            if (!navLinks.contains(event.target) && !menuToggle.contains(event.target)) {
+                navLinks.classList.remove("active");
+            }
+        });
+
+        // Fechar menu com tecla Esc
+        document.addEventListener("keydown", function (event) {
+            if (event.key === "Escape") {
+                navLinks.classList.remove("active");
+            }
+        });
     }
 
-    /* ======= MODO ESCURO GLOBAL ======= */
+    /* ======= MODO ESCURO ======= */
     const darkModeToggle = document.getElementById("darkModeToggle");
 
     function aplicarModoEscuro() {
         if (localStorage.getItem("darkMode") === "enabled") {
             document.body.classList.add("dark-mode");
+            darkModeToggle.innerText = "☀️";
+        } else {
+            darkModeToggle.innerText = "🌙";
         }
     }
 
-    aplicarModoEscuro(); // Aplica o modo escuro ao carregar a página
+    aplicarModoEscuro();
 
     if (darkModeToggle) {
         darkModeToggle.addEventListener("click", function () {
@@ -31,8 +52,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (document.body.classList.contains("dark-mode")) {
                 localStorage.setItem("darkMode", "enabled");
+                darkModeToggle.innerText = "☀️";
             } else {
                 localStorage.setItem("darkMode", "disabled");
+                darkModeToggle.innerText = "🌙";
             }
         });
     }
@@ -42,55 +65,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (backToTopButton) {
         window.addEventListener("scroll", function () {
-            if (window.scrollY > 200) {
-                backToTopButton.style.display = "block";
-            } else {
-                backToTopButton.style.display = "none";
-            }
+            backToTopButton.style.display = window.scrollY > 200 ? "block" : "none";
         });
 
         backToTopButton.addEventListener("click", function () {
-            window.scrollTo({
-                top: 0,
-                behavior: "smooth"
-            });
+            window.scrollTo({ top: 0, behavior: "smooth" });
         });
     }
 
-    /* ======= NOTIFICAÇÃO DO BLOG ======= */
-    const notification = document.getElementById("notification");
-    const closeNotification = document.getElementById("closeNotification");
-
-    if (notification && closeNotification) {
-        closeNotification.addEventListener("click", function () {
-            notification.style.display = "none";
-        });
-    }
-
-    /* ======= ANIMAÇÃO "FADE-IN" AO ROLAR ======= */
-    const fadeElements = document.querySelectorAll(".fade-in");
-
-    const observer = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add("visible");
-                observer.unobserve(entry.target);
-            }
-        });
-    }, { threshold: 0.3 });
-
-    fadeElements.forEach(element => {
-        observer.observe(element);
-    });
-
-    /* ======= CHATBOT LOCAL ======= */
+    /* ======= CHATBOT ======= */
     const chatbotToggle = document.getElementById("chatbot-toggle");
     const chatbotContainer = document.querySelector(".chatbot-container");
     const chatBox = document.getElementById("chatBox");
     const userInput = document.getElementById("userInput");
     const sendMessage = document.getElementById("sendMessage");
 
-    // Respostas pré-definidas
     const respostas = {
         "olá": "Olá! Como posso ajudar-te hoje? 😊",
         "quem és tu?": "Sou o EcoBot, um assistente especializado em ambiente e IA! 🌱",
@@ -99,12 +88,6 @@ document.addEventListener("DOMContentLoaded", function () {
         "adeus": "Até breve! Sempre aqui para ajudar. 👋",
         "default": "Desculpa, não entendi. Podes reformular a tua pergunta?"
     };
-
-    if (chatbotToggle) {
-        chatbotToggle.addEventListener("click", function () {
-            chatbotContainer.style.display = chatbotContainer.style.display === "block" ? "none" : "block";
-        });
-    }
 
     function addMessage(text, type) {
         const message = document.createElement("p");
@@ -115,47 +98,11 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function getBotResponse(userMessage) {
-        const lowerCaseMessage = userMessage.toLowerCase();
-        return respostas[lowerCaseMessage] || respostas["default"];
-    }
-
-    function addQuickReplies(options) {
-        const quickReplyContainer = document.createElement("div");
-        quickReplyContainer.classList.add("quick-replies");
-
-        options.forEach(option => {
-            const button = document.createElement("button");
-            button.innerText = option;
-            button.addEventListener("click", function () {
-                userInput.value = option;
-                sendMessage.click();
-            });
-            quickReplyContainer.appendChild(button);
-        });
-
-        chatBox.appendChild(quickReplyContainer);
-        chatBox.scrollTop = chatBox.scrollHeight;
-    }
-
-    function showTypingIndicator() {
-        const typingMessage = document.createElement("p");
-        typingMessage.classList.add("bot-message");
-        typingMessage.innerText = "EcoBot está a escrever...";
-        typingMessage.id = "typingIndicator";
-        chatBox.appendChild(typingMessage);
-        chatBox.scrollTop = chatBox.scrollHeight;
-    }
-
-    function hideTypingIndicator() {
-        const typingIndicator = document.getElementById("typingIndicator");
-        if (typingIndicator) {
-            typingIndicator.remove();
-        }
+        return respostas[userMessage.toLowerCase()] || respostas["default"];
     }
 
     function saveChatHistory() {
-        const messages = chatBox.innerHTML;
-        localStorage.setItem("chatHistory", messages);
+        localStorage.setItem("chatHistory", chatBox.innerHTML);
     }
 
     function loadChatHistory() {
@@ -165,13 +112,14 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    const notificationSound = new Audio("sounds/notificacao.mp3");
+    loadChatHistory();
 
-    function playNotificationSound() {
-        notificationSound.play();
+    if (chatbotToggle) {
+        chatbotToggle.addEventListener("click", function () {
+            chatbotContainer.style.display = chatbotContainer.style.display === "block" ? "none" : "block";
+            chatbotContainer.classList.add("fade-in");
+        });
     }
-
-    loadChatHistory(); // Carregar histórico ao iniciar a página
 
     sendMessage.addEventListener("click", function () {
         const userText = userInput.value.trim();
@@ -180,16 +128,9 @@ document.addEventListener("DOMContentLoaded", function () {
         addMessage(userText, "user");
         userInput.value = "";
 
-        showTypingIndicator();
         setTimeout(() => {
-            hideTypingIndicator();
             addMessage(getBotResponse(userText), "bot");
-            playNotificationSound();
             saveChatHistory();
-
-            if (userText.toLowerCase() === "como posso participar?") {
-                addQuickReplies(["Eventos", "Blog", "Contato"]);
-            }
         }, 1500);
     });
 
@@ -197,6 +138,21 @@ document.addEventListener("DOMContentLoaded", function () {
         if (e.key === "Enter") {
             sendMessage.click();
         }
+    });
+
+    /* ======= OTIMIZAÇÃO DE PERFORMANCE ======= */
+    document.querySelectorAll("img").forEach(img => {
+        img.setAttribute("loading", "lazy");
+    });
+
+    // Pré-carregar recursos essenciais
+    const preloadResources = ["css/style.min.css", "script.min.js"];
+    preloadResources.forEach(resource => {
+        const link = document.createElement("link");
+        link.rel = "preload";
+        link.href = resource;
+        link.as = resource.endsWith(".css") ? "style" : "script";
+        document.head.appendChild(link);
     });
 });
 
