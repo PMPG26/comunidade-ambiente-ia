@@ -14,24 +14,7 @@ document.addEventListener("DOMContentLoaded", function () {
         console.error("Erro: Elementos do menu não encontrados!");
     }
 
-    // Fechar menu ao clicar fora
-        document.addEventListener("click", function (event) {
-            if (!navLinks.contains(event.target) && !menuToggle.contains(event.target)) {
-                navLinks.classList.remove("active");
-            }
-        });
-
-        // Fechar menu com tecla Esc
-        document.addEventListener("keydown", function (event) {
-            if (event.key === "Escape") {
-                navLinks.classList.remove("active");
-            }
-        });
-    } else {
-        console.error("Erro: Elementos do menu não encontrados!");
-    }
-
-    /* ======= MODO ESCURO GLOBAL ======= */
+        /* ======= MODO ESCURO GLOBAL ======= */
     const darkModeToggle = document.getElementById("darkModeToggle");
 
     function aplicarModoEscuro() {
