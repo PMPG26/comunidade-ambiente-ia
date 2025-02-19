@@ -104,12 +104,6 @@ nav ul li a:hover {
 }
 
 /* ====== Menu Mobile Melhorado ====== */
-.menu-toggle {
-    display: none;
-    font-size: 2rem;
-    cursor: pointer;
-}
-
 @media screen and (max-width: 768px) {
     .nav-links {
         display: flex;
@@ -132,20 +126,47 @@ nav ul li a:hover {
 
     .menu-toggle {
         display: block;
+        cursor: pointer;
+        color: white;
+        font-size: 2rem;
+        position: absolute;
+        right: 20px;
+        top: 15px;
+    }
+
+    nav ul {
+        flex-direction: column;
+        width: 100%;
+        padding: 10px 0;
     }
 
     nav ul li {
         margin: 10px 0;
+    }
+
+    nav ul li a {
+        font-size: 1.2rem;
+        padding: 10px;
+        display: block;
     }
 }
 
 /* ====== Hero Section ====== */
 .hero {
     text-align: center;
-    padding: 50px;
+    padding: 50px 20px;
     background: #66bb6a;
     color: white;
     animation: fadeIn 1s ease-in-out;
+    position: relative;
+}
+
+.hero img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 20px auto;
+    border-radius: 10px; /* Adiciona cantos arredondados */
 }
 
 /* ====== Botão "Voltar ao Topo" Melhorado ====== */
@@ -275,6 +296,16 @@ footer a:hover {
     border-bottom: 2px solid #1b5e20;
     background: white;
     border-radius: 10px 10px 0 0;
+}
+
+/* ====== GARANTIR QUE O SITE NÃO PASSA A LARGURA DA TELA ====== */
+body, html {
+    overflow-x: hidden;
+}
+
+.container {
+    max-width: 100%;
+    overflow-x: hidden;
 }
 
 
