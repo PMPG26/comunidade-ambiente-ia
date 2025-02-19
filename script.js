@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function () {
         console.error("Erro: Elementos do menu não encontrados!");
     }
 
-        /* ======= MODO ESCURO GLOBAL ======= */
+    /* ======= MODO ESCURO GLOBAL ======= */
     const darkModeToggle = document.getElementById("darkModeToggle");
 
     function aplicarModoEscuro() {
@@ -83,12 +83,20 @@ document.addEventListener("DOMContentLoaded", function () {
         observer.observe(element);
     });
 
-    /* ======= CHATBOT LOCAL ======= */
+    /* ======= CORREÇÃO DO CHATBOT LOCAL ======= */
     const chatbotToggle = document.getElementById("chatbot-toggle");
     const chatbotContainer = document.querySelector(".chatbot-container");
     const chatBox = document.getElementById("chatBox");
     const userInput = document.getElementById("userInput");
     const sendMessage = document.getElementById("sendMessage");
+
+    if (chatbotToggle && chatbotContainer) {
+        chatbotToggle.addEventListener("click", function () {
+            chatbotContainer.classList.toggle("active");
+        });
+    } else {
+        console.error("Erro: Elementos do chatbot não encontrados!");
+    }
 
     // Respostas pré-definidas
     const respostas = {
@@ -99,12 +107,6 @@ document.addEventListener("DOMContentLoaded", function () {
         "adeus": "Até breve! Sempre aqui para ajudar. 👋",
         "default": "Desculpa, não entendi. Podes reformular a tua pergunta?"
     };
-
-    if (chatbotToggle) {
-        chatbotToggle.addEventListener("click", function () {
-            chatbotContainer.style.display = chatbotContainer.style.display === "block" ? "none" : "block";
-        });
-    }
 
     function addMessage(text, type) {
         const message = document.createElement("p");
@@ -199,6 +201,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
+
 
 
 
