@@ -1,19 +1,26 @@
-// Configuração do Firebase (SUBSTITUI pelos teus dados!)
+// 🔥 Importar funções do Firebase
+import { initializeApp } from "firebase/app";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "firebase/auth";
+import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp } from "firebase/firestore";
+
+// 🔥 Configuração do Firebase
 const firebaseConfig = {
-    apiKey: "TUA_API_KEY",
-    authDomain: "teuprojeto.firebaseapp.com",
-    projectId: "teuprojeto",
-    storageBucket: "teuprojeto.appspot.com",
-    messagingSenderId: "TUA_MESSAGING_ID",
-    appId: "TUA_APP_ID"
+  apiKey: "AIzaSyD_D0x4h3Sfqus9X8x2GCmJxAYAgmhGwU4",
+  authDomain: "forum-ambiente-ia.firebaseapp.com",
+  projectId: "forum-ambiente-ia",
+  storageBucket: "forum-ambiente-ia.firebasestorage.app",
+  messagingSenderId: "718767893770",
+  appId: "1:718767893770:web:51e328c78986d9bd0c1ef3",
+  measurementId: "G-FQR97FPTED"
 };
 
-// Inicializar Firebase
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const db = firebase.firestore();
+// 🔥 Inicializar Firebase
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+const provider = new GoogleAuthProvider();
 
-// Elementos HTML
+// 🏠 Elementos HTML
 const loginContainer = document.getElementById("login-container");
 const forumContainer = document.getElementById("forum-container");
 const emailInput = document.getElementById("email");
@@ -26,39 +33,44 @@ const postButton = document.getElementById("post-button");
 const postContent = document.getElementById("post-content");
 const postsContainer = document.getElementById("posts");
 
-// Login com Email e Password
-loginButton.addEventListener("click", function () {
-    const email = emailInput.value;
-    const password = passwordInput.value;
-    auth.signInWithEmailAndPassword(email, password)
-        .then(user => console.log("Login bem sucedido:", user))
-        .catch(error => console.error("Erro no login:", error.message));
+// 🔐 Login com Email e Password
+loginButton.addEventListener("click", async function () {
+    try {
+        const userCredential = await signInWithEmailAndPassword(auth, emailInput.value, passwordInput.value);
+        console.log("Login bem sucedido:", userCredential.user);
+    } catch (error) {
+        console.error("Erro no login:", error.message);
+    }
 });
 
-// Registo de novo utilizador
-registerButton.addEventListener("click", function () {
-    const email = emailInput.value;
-    const password = passwordInput.value;
-    auth.createUserWithEmailAndPassword(email, password)
-        .then(user => console.log("Utilizador registado:", user))
-        .catch(error => console.error("Erro no registo:", error.message));
+// 🆕 Registo de novo utilizador
+registerButton.addEventListener("click", async function () {
+    try {
+        const userCredential = await createUserWithEmailAndPassword(auth, emailInput.value, passwordInput.value);
+        console.log("Utilizador registado:", userCredential.user);
+    } catch (error) {
+        console.error("Erro no registo:", error.message);
+    }
 });
 
-// Login com Google
-googleLoginButton.addEventListener("click", function () {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    auth.signInWithPopup(provider)
-        .then(user => console.log("Login Google bem sucedido:", user))
-        .catch(error => console.error("Erro no login Google:", error.message));
+// 🔑 Login com Google
+googleLoginButton.addEventListener("click", async function () {
+    try {
+        const userCredential = await signInWithPopup(auth, provider);
+        console.log("Login Google bem sucedido:", userCredential.user);
+    } catch (error) {
+        console.error("Erro no login Google:", error.message);
+    }
 });
 
-// Logout
-logoutButton.addEventListener("click", function () {
-    auth.signOut().then(() => console.log("Logout realizado."));
+// 🚪 Logout
+logoutButton.addEventListener("click", async function () {
+    await signOut(auth);
+    console.log("Logout realizado.");
 });
 
-// Verificar se o utilizador está autenticado
-auth.onAuthStateChanged(user => {
+// 🔎 Verificar se o utilizador está autenticado
+onAuthStateChanged(auth, user => {
     if (user) {
         loginContainer.style.display = "none";
         forumContainer.style.display = "block";
@@ -71,25 +83,29 @@ auth.onAuthStateChanged(user => {
     }
 });
 
-// Publicar um novo post
-postButton.addEventListener("click", function () {
+// ✍️ Publicar um novo post
+postButton.addEventListener("click", async function () {
     const content = postContent.value.trim();
     if (content) {
-        db.collection("posts").add({
-            user: auth.currentUser.email,
-            content: content,
-            timestamp: firebase.firestore.FieldValue.serverTimestamp()
-        }).then(() => {
+        try {
+            await addDoc(collection(db, "posts"), {
+                user: auth.currentUser.email,
+                content: content,
+                timestamp: serverTimestamp()
+            });
             console.log("Mensagem publicada!");
             postContent.value = "";
             carregarPosts();
-        });
+        } catch (error) {
+            console.error("Erro ao publicar post:", error.message);
+        }
     }
 });
 
-// Carregar posts do Firestore
+// 🔄 Carregar posts do Firestore
 function carregarPosts() {
-    db.collection("posts").orderBy("timestamp", "desc").onSnapshot(snapshot => {
+    const postsQuery = query(collection(db, "posts"), orderBy("timestamp", "desc"));
+    onSnapshot(postsQuery, snapshot => {
         postsContainer.innerHTML = "";
         snapshot.docs.forEach(doc => {
             const post = doc.data();
@@ -97,3 +113,4 @@ function carregarPosts() {
         });
     });
 }
+
