@@ -1,8 +1,3 @@
-// 🔥 Importar funções do Firebase
-import { initializeApp } from "firebase/app";
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "firebase/auth";
-import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp } from "firebase/firestore";
-
 // 🔥 Configuração do Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyD_D0x4h3Sfqus9X8x2GCmJxAYAgmhGwU4",
@@ -14,11 +9,11 @@ const firebaseConfig = {
   measurementId: "G-FQR97FPTED"
 };
 
-// 🔥 Inicializar Firebase
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-const provider = new GoogleAuthProvider();
+// ✅ Inicializar Firebase sem usar "import"
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+const provider = new firebase.auth.GoogleAuthProvider();
 
 // 🏠 Elementos HTML
 const loginContainer = document.getElementById("login-container");
@@ -34,43 +29,45 @@ const postContent = document.getElementById("post-content");
 const postsContainer = document.getElementById("posts");
 
 // 🔐 Login com Email e Password
-loginButton.addEventListener("click", async function () {
-    try {
-        const userCredential = await signInWithEmailAndPassword(auth, emailInput.value, passwordInput.value);
-        console.log("Login bem sucedido:", userCredential.user);
-    } catch (error) {
-        console.error("Erro no login:", error.message);
-    }
+loginButton.addEventListener("click", function () {
+    auth.signInWithEmailAndPassword(emailInput.value, passwordInput.value)
+        .then(userCredential => {
+            console.log("Login bem sucedido:", userCredential.user);
+        })
+        .catch(error => {
+            console.error("Erro no login:", error.message);
+        });
 });
 
 // 🆕 Registo de novo utilizador
-registerButton.addEventListener("click", async function () {
-    try {
-        const userCredential = await createUserWithEmailAndPassword(auth, emailInput.value, passwordInput.value);
-        console.log("Utilizador registado:", userCredential.user);
-    } catch (error) {
-        console.error("Erro no registo:", error.message);
-    }
+registerButton.addEventListener("click", function () {
+    auth.createUserWithEmailAndPassword(emailInput.value, passwordInput.value)
+        .then(userCredential => {
+            console.log("Utilizador registado:", userCredential.user);
+        })
+        .catch(error => {
+            console.error("Erro no registo:", error.message);
+        });
 });
 
 // 🔑 Login com Google
-googleLoginButton.addEventListener("click", async function () {
-    try {
-        const userCredential = await signInWithPopup(auth, provider);
-        console.log("Login Google bem sucedido:", userCredential.user);
-    } catch (error) {
-        console.error("Erro no login Google:", error.message);
-    }
+googleLoginButton.addEventListener("click", function () {
+    auth.signInWithPopup(provider)
+        .then(userCredential => {
+            console.log("Login Google bem sucedido:", userCredential.user);
+        })
+        .catch(error => {
+            console.error("Erro no login Google:", error.message);
+        });
 });
 
 // 🚪 Logout
-logoutButton.addEventListener("click", async function () {
-    await signOut(auth);
-    console.log("Logout realizado.");
+logoutButton.addEventListener("click", function () {
+    auth.signOut().then(() => console.log("Logout realizado."));
 });
 
 // 🔎 Verificar se o utilizador está autenticado
-onAuthStateChanged(auth, user => {
+auth.onAuthStateChanged(user => {
     if (user) {
         loginContainer.style.display = "none";
         forumContainer.style.display = "block";
@@ -84,33 +81,34 @@ onAuthStateChanged(auth, user => {
 });
 
 // ✍️ Publicar um novo post
-postButton.addEventListener("click", async function () {
+postButton.addEventListener("click", function () {
     const content = postContent.value.trim();
     if (content) {
-        try {
-            await addDoc(collection(db, "posts"), {
-                user: auth.currentUser.email,
-                content: content,
-                timestamp: serverTimestamp()
-            });
+        db.collection("posts").add({
+            user: auth.currentUser.email,
+            content: content,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        }).then(() => {
             console.log("Mensagem publicada!");
             postContent.value = "";
             carregarPosts();
-        } catch (error) {
+        }).catch(error => {
             console.error("Erro ao publicar post:", error.message);
-        }
+        });
     }
 });
 
 // 🔄 Carregar posts do Firestore
 function carregarPosts() {
-    const postsQuery = query(collection(db, "posts"), orderBy("timestamp", "desc"));
-    onSnapshot(postsQuery, snapshot => {
+    db.collection("posts").orderBy("timestamp", "desc").onSnapshot(snapshot => {
         postsContainer.innerHTML = "";
-        snapshot.docs.forEach(doc => {
+        snapshot.forEach(doc => {
             const post = doc.data();
-            postsContainer.innerHTML += `<p><strong>${post.user}</strong>: ${post.content}</p>`;
+            postsContainer.innerHTML += `<p><strong>${post.user || "Anónimo"}</strong>: ${post.content}</p>`;
         });
+    }, error => {
+        console.error("Erro ao buscar posts:", error);
     });
 }
+
 
