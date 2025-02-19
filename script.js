@@ -1,15 +1,14 @@
 document.addEventListener("DOMContentLoaded", function () {
     console.log("JavaScript carregado!");
 
-/* ======= MENU HAMBÚRGUER - CORREÇÃO ======= */
+/* ======= MENU HAMBÚRGUER - CORREÇÃO FINAL ======= */
 document.addEventListener("DOMContentLoaded", function () {
     const menuToggle = document.querySelector(".menu-toggle");
     const navLinks = document.querySelector(".nav-links");
 
     if (menuToggle && navLinks) {
         menuToggle.addEventListener("click", function (event) {
-            event.stopPropagation(); // Impede que o clique feche o menu imediatamente
-            console.log("Menu hambúrguer clicado!");
+            event.stopPropagation(); // Evita que o clique feche o menu imediatamente
             navLinks.classList.toggle("active");
 
             if (navLinks.classList.contains("active")) {
@@ -30,12 +29,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 }, 300);
             }
         });
+
+        console.log("Menu hambúrguer funcional!");
     } else {
         console.error("Erro: Elementos do menu não encontrados!");
     }
 });
 
-    /* ======= MODO ESCURO - CORREÇÃO ======= */
+    /* ======= MODO ESCURO - CORREÇÃO FINAL ======= */
 document.addEventListener("DOMContentLoaded", function () {
     const darkModeToggle = document.getElementById("darkModeToggle");
 
@@ -107,7 +108,7 @@ document.addEventListener("DOMContentLoaded", function () {
         observer.observe(element);
     });
 
-    /* ======= CHATBOT - CORREÇÃO ======= */
+    /* ======= CHATBOT - CORREÇÃO FINAL ======= */
 document.addEventListener("DOMContentLoaded", function () {
     const chatbotToggle = document.getElementById("chatbot-toggle");
     const chatbotContainer = document.querySelector(".chatbot-container");
@@ -132,7 +133,7 @@ document.addEventListener("DOMContentLoaded", function () {
             chatBox.scrollTop = chatBox.scrollHeight;
         });
 
-        console.log("Chatbot inicializado!");
+        console.log("Chatbot inicializado corretamente!");
     } else {
         console.error("Erro: Elementos do chatbot não encontrados no index.html!");
     }
