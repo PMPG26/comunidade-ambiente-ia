@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fórum - Comunidade de Ambiente e IA</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h2>Fórum da Comunidade</h2>
+
+    <!-- Área de Login -->
+    <div id="login-container">
+        <input type="email" id="email" placeholder="Email">
+        <input type="password" id="password" placeholder="Senha">
+        <button id="login">Login</button>
+        <button id="register">Registar</button>
+        <button id="googleLogin">Entrar com Google</button>
+        <button id="logout" style="display:none;">Logout</button>
+    </div>
+
+    <!-- Área de Publicação -->
+    <div id="forum-container" style="display:none;">
+        <textarea id="post-content" placeholder="Escreve algo..."></textarea>
+        <button id="post-button">Publicar</button>
+        <div id="posts"></div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js"></script>
+    <script src="forum.js"></script>
+</body>
+</html>
