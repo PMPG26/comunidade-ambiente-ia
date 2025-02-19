@@ -1,29 +1,42 @@
 document.addEventListener("DOMContentLoaded", function () {
     console.log("JavaScript carregado!");
 
-/* ======= MENU HAMBURGUER - CORRIGIDO ======= */
-const menuToggle = document.querySelector(".menu-toggle");
-const navLinks = document.querySelector(".nav-links");
+/* ======= MENU HAMBÚRGUER - CORREÇÃO ======= */
+document.addEventListener("DOMContentLoaded", function () {
+    const menuToggle = document.querySelector(".menu-toggle");
+    const navLinks = document.querySelector(".nav-links");
 
-if (menuToggle && navLinks) {
-    menuToggle.addEventListener("click", function () {
-        console.log("Menu hamburguer clicado!");
-        navLinks.classList.toggle("active");
+    if (menuToggle && navLinks) {
+        menuToggle.addEventListener("click", function (event) {
+            event.stopPropagation(); // Impede que o clique feche o menu imediatamente
+            console.log("Menu hambúrguer clicado!");
+            navLinks.classList.toggle("active");
 
-        // Garantir que o display muda para "flex" ao abrir
-        if (navLinks.classList.contains("active")) {
-            navLinks.style.display = "flex";
-        } else {
-            setTimeout(() => {
-                navLinks.style.display = "none";
-            }, 300); // Tempo igual à transição CSS
-        }
-    });
-} else {
-    console.error("Erro: Elementos do menu não encontrados!");
-}
+            if (navLinks.classList.contains("active")) {
+                navLinks.style.display = "flex";
+            } else {
+                setTimeout(() => {
+                    navLinks.style.display = "none";
+                }, 300); // Tempo igual à transição CSS
+            }
+        });
 
-    /* ======= MODO ESCURO GLOBAL ======= */
+        // Fechar o menu ao clicar fora dele
+        document.addEventListener("click", function (event) {
+            if (!navLinks.contains(event.target) && !menuToggle.contains(event.target)) {
+                navLinks.classList.remove("active");
+                setTimeout(() => {
+                    navLinks.style.display = "none";
+                }, 300);
+            }
+        });
+    } else {
+        console.error("Erro: Elementos do menu não encontrados!");
+    }
+});
+
+    /* ======= MODO ESCURO - CORREÇÃO ======= */
+document.addEventListener("DOMContentLoaded", function () {
     const darkModeToggle = document.getElementById("darkModeToggle");
 
     function aplicarModoEscuro() {
@@ -31,6 +44,7 @@ if (menuToggle && navLinks) {
             document.body.classList.add("dark-mode");
             darkModeToggle.innerText = "☀️";
         } else {
+            document.body.classList.remove("dark-mode");
             darkModeToggle.innerText = "🌙";
         }
     }
@@ -42,9 +56,10 @@ if (menuToggle && navLinks) {
             document.body.classList.toggle("dark-mode");
             const isDark = document.body.classList.contains("dark-mode");
             localStorage.setItem("darkMode", isDark ? "enabled" : "disabled");
-            darkModeToggle.innerText = isDark ? "☀️" : "🌙";
+            aplicarModoEscuro(); // Garante que o botão também muda
         });
     }
+});
 
     /* ======= BOTÃO "VOLTAR AO TOPO" ======= */
     const backToTopButton = document.getElementById("backToTop");
@@ -92,20 +107,36 @@ if (menuToggle && navLinks) {
         observer.observe(element);
     });
 
-    /* ======= CORREÇÃO DO CHATBOT LOCAL ======= */
+    /* ======= CHATBOT - CORREÇÃO ======= */
+document.addEventListener("DOMContentLoaded", function () {
     const chatbotToggle = document.getElementById("chatbot-toggle");
     const chatbotContainer = document.querySelector(".chatbot-container");
     const chatBox = document.getElementById("chatBox");
     const userInput = document.getElementById("userInput");
     const sendMessage = document.getElementById("sendMessage");
 
-    if (chatbotToggle && chatbotContainer) {
+    if (chatbotToggle && chatbotContainer && chatBox && userInput && sendMessage) {
         chatbotToggle.addEventListener("click", function () {
             chatbotContainer.classList.toggle("active");
         });
+
+        sendMessage.addEventListener("click", function () {
+            const userText = userInput.value.trim();
+            if (userText === "") return;
+
+            const message = document.createElement("p");
+            message.classList.add("user-message");
+            message.innerText = userText;
+            chatBox.appendChild(message);
+            userInput.value = "";
+            chatBox.scrollTop = chatBox.scrollHeight;
+        });
+
+        console.log("Chatbot inicializado!");
     } else {
-        console.error("Erro: Elementos do chatbot não encontrados!");
+        console.error("Erro: Elementos do chatbot não encontrados no index.html!");
     }
+});
 
     // Respostas pré-definidas
     const respostas = {
