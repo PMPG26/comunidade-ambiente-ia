@@ -103,10 +103,10 @@ nav ul li a:hover {
     background: #2e7d32;
 }
 
-/* ====== Menu Mobile Melhorado ====== */
+/* ====== CORREÇÃO MENU MOBILE ====== */
 @media screen and (max-width: 768px) {
     .nav-links {
-        display: flex;
+        display: none; /* Esconder por padrão */
         flex-direction: column;
         background: var(--header-color);
         position: absolute;
@@ -115,12 +115,11 @@ nav ul li a:hover {
         width: 100%;
         text-align: center;
         padding: 10px 0;
-        max-height: 0;
-        overflow: hidden;
         transition: max-height 0.3s ease-in-out;
     }
 
     .nav-links.active {
+        display: flex; /* Garante que aparece ao ativar */
         max-height: 500px;
     }
 
