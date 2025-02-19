@@ -325,6 +325,19 @@ footer {
     color: white;
 }
 
+.nav-links li a[href*="forum"] {
+    font-weight: bold;
+    color: white;
+    background: #ff9800; /* Laranja */
+    padding: 5px 15px;
+    border-radius: 8px;
+    transition: background 0.3s ease-in-out;
+}
+
+.nav-links li a[href*="forum"]:hover {
+    background: #e68900; /* Laranja mais escuro ao passar o rato */
+}
+
 
 
 
