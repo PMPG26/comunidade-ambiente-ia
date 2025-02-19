@@ -10,11 +10,8 @@ document.addEventListener("DOMContentLoaded", function () {
             navLinks.classList.toggle("active");
             console.log("Menu hamburguer clicado!");
         });
-    } else {
-        console.error("Erro: Elementos do menu não encontrados!");
-    }
 
-    // Fechar menu ao clicar fora
+        // Fechar menu ao clicar fora
         document.addEventListener("click", function (event) {
             if (!navLinks.contains(event.target) && !menuToggle.contains(event.target)) {
                 navLinks.classList.remove("active");
@@ -27,9 +24,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 navLinks.classList.remove("active");
             }
         });
+
     } else {
         console.error("Erro: Elementos do menu não encontrados!");
-    }
+    } // <-- REMOVIDO ELSE DUPLICADO AQUI
 
     /* ======= MODO ESCURO GLOBAL ======= */
     const darkModeToggle = document.getElementById("darkModeToggle");
