@@ -44,34 +44,42 @@
         <button id="closeNotification">✖</button>
     </div>
 
-    <main>
+        <main>
         <section class="hero fade-in">
-            <h2>A Comunidade de Ambiente e Inteligência Artificial dá as boas vindas!</h2>
+            <h2>A Comunidade de Ambiente e Inteligência Artificial dá as boas-vindas!</h2>
             <p>Aqui unimos inovação e sustentabilidade para um futuro mais inteligente.</p>
             <img src="images/hero-image.jpg" alt="Natureza e Tecnologia">
         </section>
+
+        <!-- 🗣️ Fórum da Comunidade -->
+        <section id="forum" class="fade-in">
+            <h2>🗣️ Fórum da Comunidade</h2>
+
+            <!-- Área de Login -->
+            <div id="login-container">
+                <input type="email" id="email" placeholder="Email">
+                <input type="password" id="password" placeholder="Senha">
+                <button id="login">Login</button>
+                <button id="register">Registar</button>
+                <button id="googleLogin">Entrar com Google</button>
+                <button id="logout" style="display:none;">Logout</button>
+            </div>
+
+            <!-- Área de Publicação -->
+            <div id="forum-container" style="display:none;">
+                <textarea id="post-content" placeholder="Escreve algo..."></textarea>
+                <button id="post-button">Publicar</button>
+                <div id="posts"></div>
+            </div>
+        </section>
     </main>
 
-    <!-- Botão de Voltar ao Topo -->
-    <button id="backToTop">↑</button>
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js"></script>
+    <script defer src="forum.js"></script>
 
-    <!-- Chatbot Widget -->
-    <div id="chatbot-widget">
-        <button id="chatbot-toggle">💬</button>
-        <div class="chatbot-container">
-            <div class="chat-box" id="chatBox">
-                <p class="bot-message">Olá! Como posso ajudar-te hoje? 🌿</p>
-            </div>
-            <input type="text" id="userInput" placeholder="Escreve uma pergunta..." autocomplete="off">
-            <button id="sendMessage">Enviar</button>
-        </div>
-    </div>
-
-    <footer>
-        <p>&copy; 2025 Comunidade de Ambiente e IA. Todos os direitos reservados.</p>
-    </footer>
-</body>
-</html>
 
 
 
