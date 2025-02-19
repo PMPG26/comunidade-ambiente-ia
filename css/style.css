@@ -307,6 +307,18 @@ body, html {
     overflow-x: hidden;
 }
 
+/* ====== ESCONDER MENU HAMBÚRGUER NO DESKTOP ====== */
+@media screen and (min-width: 769px) {
+    .menu-toggle {
+        display: none !important; /* Esconde o ícone no desktop */
+    }
+    
+    .nav-links {
+        display: flex !important; /* Mantém visível no desktop */
+    }
+}
+
+
 
 
 
