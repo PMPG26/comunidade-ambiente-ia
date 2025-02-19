@@ -20,6 +20,9 @@ document.addEventListener("DOMContentLoaded", function () {
     function aplicarModoEscuro() {
         if (localStorage.getItem("darkMode") === "enabled") {
             document.body.classList.add("dark-mode");
+            darkModeToggle.innerText = "☀️";
+        } else {
+            darkModeToggle.innerText = "🌙";
         }
     }
 
