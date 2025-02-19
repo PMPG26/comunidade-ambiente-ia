@@ -1,18 +1,27 @@
 document.addEventListener("DOMContentLoaded", function () {
     console.log("JavaScript carregado!");
 
-    /* ======= MENU HAMBURGUER ======= */
-    const menuToggle = document.querySelector(".menu-toggle");
-    const navLinks = document.querySelector(".nav-links");
+/* ======= MENU HAMBURGUER - CORRIGIDO ======= */
+const menuToggle = document.querySelector(".menu-toggle");
+const navLinks = document.querySelector(".nav-links");
 
-    if (menuToggle && navLinks) {
-        menuToggle.addEventListener("click", function () {
-            navLinks.classList.toggle("active");
-            console.log("Menu hamburguer clicado!");
-        });
-    } else {
-        console.error("Erro: Elementos do menu não encontrados!");
-    }
+if (menuToggle && navLinks) {
+    menuToggle.addEventListener("click", function () {
+        console.log("Menu hamburguer clicado!");
+        navLinks.classList.toggle("active");
+
+        // Garantir que o display muda para "flex" ao abrir
+        if (navLinks.classList.contains("active")) {
+            navLinks.style.display = "flex";
+        } else {
+            setTimeout(() => {
+                navLinks.style.display = "none";
+            }, 300); // Tempo igual à transição CSS
+        }
+    });
+} else {
+    console.error("Erro: Elementos do menu não encontrados!");
+}
 
     /* ======= MODO ESCURO GLOBAL ======= */
     const darkModeToggle = document.getElementById("darkModeToggle");
