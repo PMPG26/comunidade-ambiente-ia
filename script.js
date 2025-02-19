@@ -17,25 +17,24 @@ document.addEventListener("DOMContentLoaded", function () {
     /* ======= MODO ESCURO GLOBAL ======= */
     const darkModeToggle = document.getElementById("darkModeToggle");
 
-    function aplicarModoEscuro() {
-        if (localStorage.getItem("darkMode") === "enabled") {
-            document.body.classList.add("dark-mode");
-        }
+function aplicarModoEscuro() {
+    if (localStorage.getItem("darkMode") === "enabled") {
+        document.body.classList.add("dark-mode");
+        darkModeToggle.innerText = "☀️"; // Sol no modo escuro
+    } else {
+        darkModeToggle.innerText = "🌙"; // Lua no modo claro
     }
+}
 
-    aplicarModoEscuro(); // Aplica o modo escuro ao carregar a página
+aplicarModoEscuro();
 
-    if (darkModeToggle) {
-        darkModeToggle.addEventListener("click", function () {
-            document.body.classList.toggle("dark-mode");
+darkModeToggle.addEventListener("click", function () {
+    document.body.classList.toggle("dark-mode");
+    const isDark = document.body.classList.contains("dark-mode");
+    localStorage.setItem("darkMode", isDark ? "enabled" : "disabled");
+    darkModeToggle.innerText = isDark ? "☀️" : "🌙";
+});
 
-            if (document.body.classList.contains("dark-mode")) {
-                localStorage.setItem("darkMode", "enabled");
-            } else {
-                localStorage.setItem("darkMode", "disabled");
-            }
-        });
-    }
 
     /* ======= BOTÃO "VOLTAR AO TOPO" ======= */
     const backToTopButton = document.getElementById("backToTop");
