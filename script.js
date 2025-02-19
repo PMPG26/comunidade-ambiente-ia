@@ -10,24 +10,9 @@ document.addEventListener("DOMContentLoaded", function () {
             navLinks.classList.toggle("active");
             console.log("Menu hamburguer clicado!");
         });
-
-        // Fechar menu ao clicar fora
-        document.addEventListener("click", function (event) {
-            if (!navLinks.contains(event.target) && !menuToggle.contains(event.target)) {
-                navLinks.classList.remove("active");
-            }
-        });
-
-        // Fechar menu com tecla Esc
-        document.addEventListener("keydown", function (event) {
-            if (event.key === "Escape") {
-                navLinks.classList.remove("active");
-            }
-        });
-
     } else {
         console.error("Erro: Elementos do menu não encontrados!");
-    } // <-- REMOVIDO ELSE DUPLICADO AQUI
+    }
 
     /* ======= MODO ESCURO GLOBAL ======= */
     const darkModeToggle = document.getElementById("darkModeToggle");
@@ -212,20 +197,6 @@ document.addEventListener("DOMContentLoaded", function () {
         if (e.key === "Enter") {
             sendMessage.click();
         }
-        });
-
-    /* ======= OTIMIZAÇÃO ======= */
-    document.querySelectorAll("img").forEach(img => {
-        img.setAttribute("loading", "lazy");
-    });
-
-    const preloadResources = ["css/style.css", "script.js"];
-    preloadResources.forEach(resource => {
-        const link = document.createElement("link");
-        link.rel = "preload";
-        link.href = resource;
-        link.as = resource.endsWith(".css") ? "style" : "script";
-        document.head.appendChild(link);
     });
 });
 
