@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forum - Community for Environment and AI</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <h2>Community Forum</h2>
+
+    <div id="login-container">
+        <input type="email" id="email" placeholder="Email">
+        <input type="password" id="password" placeholder="Password">
+        <button id="login">Login</button>
+        <button id="register">Register</button>
+        <button id="googleLogin">Sign in with Google</button>
+        <button id="logout" style="display:none;">Logout</button>
+    </div>
+
+    <div id="forum-container" style="display:none;">
+        <textarea id="post-content" placeholder="Write something..."></textarea>
+        <button id="post-button">Post</button>
+        <div id="posts"></div>
+    </div>
+
+    <script src="../forum.js"></script>
+</body>
+</html>
