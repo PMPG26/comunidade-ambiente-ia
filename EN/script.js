@@ -1,13 +1,10 @@
 document.addEventListener("DOMContentLoaded", function () {
-    console.log("JavaScript carregado!");
+    console.log("JavaScript loaded!");
 
-    /* ======= DETECTAR IDIOMA ======= */
-    const lang = window.location.pathname.includes("/EN/") ? "en" : "pt";
-
-    /* ======= BOTÃO DE TROCA DE IDIOMA ======= */
+    /* ======= LANGUAGE SWITCH BUTTON ======= */
     const langToggle = document.createElement("button");
     langToggle.id = "langToggle";
-    langToggle.innerText = window.location.pathname.includes("/EN/") ? "PT" : "EN";
+    langToggle.innerText = "PT";
     langToggle.style.position = "absolute";
     langToggle.style.top = "15px";
     langToggle.style.right = "15px";
@@ -20,71 +17,35 @@ document.addEventListener("DOMContentLoaded", function () {
     document.body.appendChild(langToggle);
 
     langToggle.addEventListener("click", function () {
-        if (window.location.pathname.includes("/EN/")) {
-            window.location.href = window.location.href.replace("/EN/", "/");
-        } else {
-            window.location.href = window.location.href.replace("/index.html", "/EN/index.html");
-        }
+        window.location.href = "../index.html";
     });
 
-    /* ======= TRADUÇÕES ======= */
-    const translations = {
-        pt: {
-            menuClick: "Menu hamburguer clicado!",
-            menuError: "Erro: Elementos do menu não encontrados!",
-            chatbotTyping: "EcoBot está a escrever...",
-            chatbotResponses: {
-                "olá": "Olá! Como posso ajudar-te hoje? 😊",
-                "quem és tu?": "Sou o EcoBot, um assistente especializado em ambiente e IA! 🌱",
-                "o que é a comunidade de ambiente e ia?": "A nossa comunidade explora tecnologia para um futuro mais sustentável. 🌍",
-                "como posso participar?": "Podes participar de várias formas! Escolhe uma opção:",
-                "adeus": "Até breve! Sempre aqui para ajudar. 👋",
-                "default": "Desculpa, não entendi. Podes reformular a tua pergunta?"
-            }
-        },
-        en: {
-            menuClick: "Hamburger menu clicked!",
-            menuError: "Error: Menu elements not found!",
-            chatbotTyping: "EcoBot is typing...",
-            chatbotResponses: {
-                "hello": "Hello! How can I assist you today? 😊",
-                "who are you?": "I'm EcoBot, an assistant specialized in environment and AI! 🌱",
-                "what is the environment and ai community?": "Our community explores technology for a more sustainable future. 🌍",
-                "how can I participate?": "You can participate in several ways! Choose an option:",
-                "goodbye": "See you soon! Always here to help. 👋",
-                "default": "Sorry, I didn't understand. Can you rephrase your question?"
-            }
-        }
-    };
-
-    /* ======= TEU CÓDIGO ORIGINAL ABAIXO ======= */
-
-    /* ======= MENU HAMBURGUER ======= */
+    /* ======= HAMBURGER MENU ======= */
     const menuToggle = document.querySelector(".menu-toggle");
     const navLinks = document.querySelector(".nav-links");
 
     if (menuToggle && navLinks) {
         menuToggle.addEventListener("click", function () {
             navLinks.classList.toggle("active");
-            console.log(translations[lang].menuClick);
+            console.log("Hamburger menu clicked!");
         });
     } else {
-        console.error(translations[lang].menuError);
+        console.error("Error: Menu elements not found!");
     }
 
-    /* ======= MODO ESCURO GLOBAL ======= */
+    /* ======= DARK MODE ======= */
     const darkModeToggle = document.getElementById("darkModeToggle");
 
-    function aplicarModoEscuro() {
+    function applyDarkMode() {
         if (localStorage.getItem("darkMode") === "enabled") {
             document.body.classList.add("dark-mode");
-            darkModeToggle.innerText = "☀️"; // Sol no modo escuro
+            darkModeToggle.innerText = "☀️";
         } else {
-            darkModeToggle.innerText = "🌙"; // Lua no modo claro
+            darkModeToggle.innerText = "🌙";
         }
     }
 
-    aplicarModoEscuro();
+    applyDarkMode();
 
     darkModeToggle.addEventListener("click", function () {
         document.body.classList.toggle("dark-mode");
@@ -93,7 +54,7 @@ document.addEventListener("DOMContentLoaded", function () {
         darkModeToggle.innerText = isDark ? "☀️" : "🌙";
     });
 
-    /* ======= BOTÃO "VOLTAR AO TOPO" ======= */
+    /* ======= BACK TO TOP BUTTON ======= */
     const backToTopButton = document.getElementById("backToTop");
 
     if (backToTopButton) {
@@ -113,33 +74,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    /* ======= NOTIFICAÇÃO DO BLOG ======= */
-    const notification = document.getElementById("notification");
-    const closeNotification = document.getElementById("closeNotification");
-
-    if (notification && closeNotification) {
-        closeNotification.addEventListener("click", function () {
-            notification.style.display = "none";
-        });
-    }
-
-    /* ======= ANIMAÇÃO "FADE-IN" AO ROLAR ======= */
-    const fadeElements = document.querySelectorAll(".fade-in");
-
-    const observer = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add("visible");
-                observer.unobserve(entry.target);
-            }
-        });
-    }, { threshold: 0.3 });
-
-    fadeElements.forEach(element => {
-        observer.observe(element);
-    });
-
-    /* ======= CHATBOT LOCAL ======= */
+    /* ======= CHATBOT ======= */
     const chatbotToggle = document.getElementById("chatbot-toggle");
     const chatbotContainer = document.querySelector(".chatbot-container");
     const chatBox = document.getElementById("chatBox");
@@ -152,15 +87,24 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+    const chatbotResponses = {
+        "hello": "Hello! How can I assist you today? 😊",
+        "who are you?": "I'm EcoBot, an assistant specialized in environment and AI! 🌱",
+        "what is the environment and ai community?": "Our community explores technology for a more sustainable future. 🌍",
+        "how can I participate?": "You can participate in several ways! Choose an option:",
+        "goodbye": "See you soon! Always here to help. 👋",
+        "default": "Sorry, I didn't understand. Can you rephrase your question?"
+    };
+
     function getBotResponse(userMessage) {
         const lowerCaseMessage = userMessage.toLowerCase();
-        return translations[lang].chatbotResponses[lowerCaseMessage] || translations[lang].chatbotResponses["default"];
+        return chatbotResponses[lowerCaseMessage] || chatbotResponses["default"];
     }
 
     function showTypingIndicator() {
         const typingMessage = document.createElement("p");
         typingMessage.classList.add("bot-message");
-        typingMessage.innerText = translations[lang].chatbotTyping;
+        typingMessage.innerText = "EcoBot is typing...";
         typingMessage.id = "typingIndicator";
         chatBox.appendChild(typingMessage);
         chatBox.scrollTop = chatBox.scrollHeight;
@@ -193,3 +137,6 @@ document.addEventListener("DOMContentLoaded", function () {
             sendMessage.click();
         }
     });
+
+    console.log("script-en.js loaded successfully.");
+});
