@@ -1,6 +1,31 @@
 document.addEventListener("DOMContentLoaded", function () {
     console.log("JavaScript carregado!");
 
+    /* ======= BOTÃO DE TROCA DE IDIOMA ======= */
+    const langToggle = document.createElement("button");
+    langToggle.id = "langToggle";
+    langToggle.innerText = window.location.pathname.includes("/EN/") ? "PT" : "EN";
+    langToggle.style.position = "absolute";
+    langToggle.style.top = "15px";
+    langToggle.style.right = "15px";
+    langToggle.style.padding = "5px 10px";
+    langToggle.style.cursor = "pointer";
+    langToggle.style.border = "none";
+    langToggle.style.background = "#1b5e20";
+    langToggle.style.color = "white";
+    langToggle.style.fontWeight = "bold";
+    document.body.appendChild(langToggle);
+
+    langToggle.addEventListener("click", function () {
+        if (window.location.pathname.includes("/EN/")) {
+            window.location.href = window.location.href.replace("/EN/", "/");
+        } else {
+            window.location.href = window.location.href.replace("/index.html", "/EN/index.html");
+        }
+    });
+
+    /* ======= TEU CÓDIGO ORIGINAL ABAIXO ======= */
+
     /* ======= MENU HAMBURGUER ======= */
     const menuToggle = document.querySelector(".menu-toggle");
     const navLinks = document.querySelector(".nav-links");
@@ -17,24 +42,23 @@ document.addEventListener("DOMContentLoaded", function () {
     /* ======= MODO ESCURO GLOBAL ======= */
     const darkModeToggle = document.getElementById("darkModeToggle");
 
-function aplicarModoEscuro() {
-    if (localStorage.getItem("darkMode") === "enabled") {
-        document.body.classList.add("dark-mode");
-        darkModeToggle.innerText = "☀️"; // Sol no modo escuro
-    } else {
-        darkModeToggle.innerText = "🌙"; // Lua no modo claro
+    function aplicarModoEscuro() {
+        if (localStorage.getItem("darkMode") === "enabled") {
+            document.body.classList.add("dark-mode");
+            darkModeToggle.innerText = "☀️"; // Sol no modo escuro
+        } else {
+            darkModeToggle.innerText = "🌙"; // Lua no modo claro
+        }
     }
-}
 
-aplicarModoEscuro();
+    aplicarModoEscuro();
 
-darkModeToggle.addEventListener("click", function () {
-    document.body.classList.toggle("dark-mode");
-    const isDark = document.body.classList.contains("dark-mode");
-    localStorage.setItem("darkMode", isDark ? "enabled" : "disabled");
-    darkModeToggle.innerText = isDark ? "☀️" : "🌙";
-});
-
+    darkModeToggle.addEventListener("click", function () {
+        document.body.classList.toggle("dark-mode");
+        const isDark = document.body.classList.contains("dark-mode");
+        localStorage.setItem("darkMode", isDark ? "enabled" : "disabled");
+        darkModeToggle.innerText = isDark ? "☀️" : "🌙";
+    });
 
     /* ======= BOTÃO "VOLTAR AO TOPO" ======= */
     const backToTopButton = document.getElementById("backToTop");
@@ -89,7 +113,6 @@ darkModeToggle.addEventListener("click", function () {
     const userInput = document.getElementById("userInput");
     const sendMessage = document.getElementById("sendMessage");
 
-    // Respostas pré-definidas
     const respostas = {
         "olá": "Olá! Como posso ajudar-te hoje? 😊",
         "quem és tu?": "Sou o EcoBot, um assistente especializado em ambiente e IA! 🌱",
@@ -198,6 +221,7 @@ darkModeToggle.addEventListener("click", function () {
         }
     });
 });
+
 
 
 
