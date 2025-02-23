@@ -1,60 +1,42 @@
 document.addEventListener("DOMContentLoaded", function () {
-    console.log("JavaScript loaded!");
+    console.log("JavaScript carregado!");
 
-    /* ======= LANGUAGE SWITCH BUTTON ======= */
-    const langToggle = document.createElement("button");
-    langToggle.id = "langToggle";
-    langToggle.innerText = "PT";
-    langToggle.style.position = "absolute";
-    langToggle.style.top = "15px";
-    langToggle.style.right = "15px";
-    langToggle.style.padding = "5px 10px";
-    langToggle.style.cursor = "pointer";
-    langToggle.style.border = "none";
-    langToggle.style.background = "#1b5e20";
-    langToggle.style.color = "white";
-    langToggle.style.fontWeight = "bold";
-    document.body.appendChild(langToggle);
-
-    langToggle.addEventListener("click", function () {
-        window.location.href = "../index.html";
-    });
-
-    /* ======= HAMBURGER MENU ======= */
+    /* ======= MENU HAMBURGUER ======= */
     const menuToggle = document.querySelector(".menu-toggle");
     const navLinks = document.querySelector(".nav-links");
 
     if (menuToggle && navLinks) {
         menuToggle.addEventListener("click", function () {
             navLinks.classList.toggle("active");
-            console.log("Hamburger menu clicked!");
+            console.log("Menu hamburguer clicado!");
         });
     } else {
-        console.error("Error: Menu elements not found!");
+        console.error("Erro: Elementos do menu não encontrados!");
     }
 
-    /* ======= DARK MODE ======= */
+    /* ======= MODO ESCURO GLOBAL ======= */
     const darkModeToggle = document.getElementById("darkModeToggle");
 
-    function applyDarkMode() {
-        if (localStorage.getItem("darkMode") === "enabled") {
-            document.body.classList.add("dark-mode");
-            darkModeToggle.innerText = "☀️";
-        } else {
-            darkModeToggle.innerText = "🌙";
-        }
+function aplicarModoEscuro() {
+    if (localStorage.getItem("darkMode") === "enabled") {
+        document.body.classList.add("dark-mode");
+        darkModeToggle.innerText = "☀️"; // Sol no modo escuro
+    } else {
+        darkModeToggle.innerText = "🌙"; // Lua no modo claro
     }
+}
 
-    applyDarkMode();
+aplicarModoEscuro();
 
-    darkModeToggle.addEventListener("click", function () {
-        document.body.classList.toggle("dark-mode");
-        const isDark = document.body.classList.contains("dark-mode");
-        localStorage.setItem("darkMode", isDark ? "enabled" : "disabled");
-        darkModeToggle.innerText = isDark ? "☀️" : "🌙";
-    });
+darkModeToggle.addEventListener("click", function () {
+    document.body.classList.toggle("dark-mode");
+    const isDark = document.body.classList.contains("dark-mode");
+    localStorage.setItem("darkMode", isDark ? "enabled" : "disabled");
+    darkModeToggle.innerText = isDark ? "☀️" : "🌙";
+});
 
-    /* ======= BACK TO TOP BUTTON ======= */
+
+    /* ======= BOTÃO "VOLTAR AO TOPO" ======= */
     const backToTopButton = document.getElementById("backToTop");
 
     if (backToTopButton) {
@@ -74,20 +56,41 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    /* ======= CHATBOT ======= */
+    /* ======= NOTIFICAÇÃO DO BLOG ======= */
+    const notification = document.getElementById("notification");
+    const closeNotification = document.getElementById("closeNotification");
+
+    if (notification && closeNotification) {
+        closeNotification.addEventListener("click", function () {
+            notification.style.display = "none";
+        });
+    }
+
+    /* ======= ANIMAÇÃO "FADE-IN" AO ROLAR ======= */
+    const fadeElements = document.querySelectorAll(".fade-in");
+
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add("visible");
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.3 });
+
+    fadeElements.forEach(element => {
+        observer.observe(element);
+    });
+
+    /* ======= CHATBOT LOCAL ======= */
     const chatbotToggle = document.getElementById("chatbot-toggle");
     const chatbotContainer = document.querySelector(".chatbot-container");
     const chatBox = document.getElementById("chatBox");
     const userInput = document.getElementById("userInput");
     const sendMessage = document.getElementById("sendMessage");
 
-    if (chatbotToggle) {
-        chatbotToggle.addEventListener("click", function () {
-            chatbotContainer.style.display = chatbotContainer.style.display === "block" ? "none" : "block";
-        });
-    }
-
-    const chatbotResponses = {
+    // Respostas pré-definidas
+    const respostas = {
         "hello": "Hello! How can I assist you today? 😊",
         "who are you?": "I'm EcoBot, an assistant specialized in environment and AI! 🌱",
         "what is the environment and ai community?": "Our community explores technology for a more sustainable future. 🌍",
@@ -96,9 +99,41 @@ document.addEventListener("DOMContentLoaded", function () {
         "default": "Sorry, I didn't understand. Can you rephrase your question?"
     };
 
+    if (chatbotToggle) {
+        chatbotToggle.addEventListener("click", function () {
+            chatbotContainer.style.display = chatbotContainer.style.display === "block" ? "none" : "block";
+        });
+    }
+
+    function addMessage(text, type) {
+        const message = document.createElement("p");
+        message.classList.add(type === "bot" ? "bot-message" : "user-message");
+        message.innerText = text;
+        chatBox.appendChild(message);
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
     function getBotResponse(userMessage) {
         const lowerCaseMessage = userMessage.toLowerCase();
-        return chatbotResponses[lowerCaseMessage] || chatbotResponses["default"];
+        return respostas[lowerCaseMessage] || respostas["default"];
+    }
+
+    function addQuickReplies(options) {
+        const quickReplyContainer = document.createElement("div");
+        quickReplyContainer.classList.add("quick-replies");
+
+        options.forEach(option => {
+            const button = document.createElement("button");
+            button.innerText = option;
+            button.addEventListener("click", function () {
+                userInput.value = option;
+                sendMessage.click();
+            });
+            quickReplyContainer.appendChild(button);
+        });
+
+        chatBox.appendChild(quickReplyContainer);
+        chatBox.scrollTop = chatBox.scrollHeight;
     }
 
     function showTypingIndicator() {
@@ -117,18 +152,43 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
+    function saveChatHistory() {
+        const messages = chatBox.innerHTML;
+        localStorage.setItem("chatHistory", messages);
+    }
+
+    function loadChatHistory() {
+        const savedMessages = localStorage.getItem("chatHistory");
+        if (savedMessages) {
+            chatBox.innerHTML = savedMessages;
+        }
+    }
+
+    const notificationSound = new Audio("sounds/notificacao.mp3");
+
+    function playNotificationSound() {
+        notificationSound.play();
+    }
+
+    loadChatHistory(); // Carregar histórico ao iniciar a página
+
     sendMessage.addEventListener("click", function () {
         const userText = userInput.value.trim();
         if (userText === "") return;
 
-        chatBox.innerHTML += `<p class="user-message">${userText}</p>`;
+        addMessage(userText, "user");
         userInput.value = "";
 
         showTypingIndicator();
         setTimeout(() => {
             hideTypingIndicator();
-            chatBox.innerHTML += `<p class="bot-message">${getBotResponse(userText)}</p>`;
-            chatBox.scrollTop = chatBox.scrollHeight;
+            addMessage(getBotResponse(userText), "bot");
+            playNotificationSound();
+            saveChatHistory();
+
+            if (userText.toLowerCase() === "how can I participate?") {
+                addQuickReplies(["Events", "Blog", "Contact"]);
+            }
         }, 1500);
     });
 
@@ -137,6 +197,4 @@ document.addEventListener("DOMContentLoaded", function () {
             sendMessage.click();
         }
     });
-
-    console.log("script-en.js loaded successfully.");
 });
